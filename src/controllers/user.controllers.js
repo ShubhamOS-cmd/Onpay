@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
 const registerUser = asyncHandler(async(req , res)=>{
-
+    
 });
 export {
     registerUser,

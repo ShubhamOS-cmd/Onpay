@@ -20,6 +20,7 @@ const userSchema = new Schema({
             type:Number,
             required: [true , 'PhoneNo is required'],
             unique: true,
+            index: true,
     },
     pin:{
         type: String,
