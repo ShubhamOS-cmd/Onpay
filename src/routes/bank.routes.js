@@ -1,9 +1,7 @@
-import { Router } from "express";
-import { registerAccount } from "../controllers/bank.controllers.js";
+import { Router } from "express"
+import { registerUser } from "../controllers/bank.controllers.js";
 const router = Router();
 
-
-router.route("/register").post(registerAccount);
-
+router.route("/register").post(registerUser);
 
 export default router

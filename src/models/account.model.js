@@ -9,9 +9,11 @@ const accountSchema = new Schema(
             trim: true, 
         },
         phoneno:{
-            type:Number,
+            type:String,
             required: [true , 'PhoneNo is required'],
             unique: true,
+            trim: true,
+            index: true,
         },
         email:{
             type : String,
