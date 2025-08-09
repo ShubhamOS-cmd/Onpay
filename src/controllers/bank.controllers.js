@@ -98,7 +98,94 @@ const depositMoney = asyncHandler(async (req  , res)=>{
     }
 })
 
+const fetchBalance = asyncHandler(async(req,res)=>{
+    // take phoneno , password 
+    // validate 
+    // search in the databases 
+    // when account find match the password
+    // return res
+    const {phoneno , password} = req.body;
+    if(!phoneno || !password){
+        throw new ApiError(400 , "Please enter all required details");
+    }
+    if(phoneno.length !== 10){
+        throw new ApiError(400 , "please enter Valid phone No!");
+    }
+    const account = await Account.findOne({phoneno});
+    if(!account){
+        throw new ApiError(400 , "Please enter valid phoneno");
+    }
+    const isCorrectPassword = await account.isPasswordCorrect(password);
+    if(!isCorrectPassword){
+        throw new ApiError(400 , "Invalid Password!");
+    }
+    return res.status(200).json(
+        new ApiResponse(200 , {
+            AccountNo : account._id,
+            phoneno,
+            AccountBalnac: account.Balance
+        },"Account Balance fetch Successfully")
+    );
+})
+const debitMoney = asyncHandler(async (req,res)=>{
+    // take accNo , phoneNo , password , amount
+    // validate amount , phoneno
+    // then check accNo is match with phoneNo link accNo
+    // then validate amount by check it's exceed not
+    // then  check password 
+    // then balance = balance - amount
+    // return res
+    const {accNo , phoneno , password , amount} = req.body;
+    if(!accNo || !phoneno || !password || !amount){
+        throw new ApiError(400 , "All fields are required!");
+    }
+    if(phoneno.length !== 10){
+        throw new ApiError(400 , "Eneter valid phone no!");
+    }
+    if (typeof amount !== 'number' || amount <= 0 || amount > 100000) {
+        throw new ApiError(400, "Please enter valid amount between 1 and 100,000");
+    }
+
+    const account = await Account.findOne({phoneno});
+    
+    if(!account){
+        throw new ApiError(400 , "Your Account not find by your phone No");
+    }
+    if(accNo !== account._id.toString()){
+        throw new ApiError(401 , "Your Account No is inavlid according to Your phoneNo!");
+    }
+    const minBalnce = 100;
+    if(account.Balance - amount < minBalnce){
+        throw new ApiError(401 , "In your Account not sufficient Balance to debit");
+    }
+    const isPasswordCorrect = await account.isPasswordCorrect(password);
+    if(!isPasswordCorrect){
+        throw new ApiError(401 , "Enter valid password!");
+    }
+    const session = await mongoose.startSession();
+    try {
+        await session.startTransaction();
+        account.Balance = account.Balance - amount;
+        await account.save({session , validateBeforeSave:false});
+        await session.commitTransaction();
+
+        return res.status(200).json(
+            new ApiResponse(200, {
+                debitedamount : amount,
+                newBalance : account.Balance 
+            },"Amount debited succesfully!")
+        );
+    } catch (error) {
+            await session.abortTransaction();
+            throw new ApiError(500 , "Something went wrong while debit money!");
+    }
+    finally{
+        await session.endSession();
+    }
+})
 export {
     registerUser,
     depositMoney,
+    fetchBalance,
+    debitMoney,
 }
