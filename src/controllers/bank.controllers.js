@@ -4,7 +4,7 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 import { Account } from "../models/account.model.js"
 import mongoose from "mongoose"
 
-const registerUser = asyncHandler(async (req , res )=> {
+const registerAccount = asyncHandler(async (req , res )=> {
     // take data from req.body
     console.log("request by body ~",req.body);
     const {name , phoneno , email , pincode , Balance , password} = req.body;
@@ -342,7 +342,7 @@ const changePhoneNO = asyncHandler(async(req , res)=>{
     )
 })
 export {
-    registerUser,
+    registerAccount,
     depositMoney,
     fetchBalance,
     debitMoney,

@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { registerUser,
+import { registerAccount,
     depositMoney,
     fetchBalance,
     debitMoney,
@@ -8,7 +8,7 @@ import { registerUser,
  } from "../controllers/bank.controllers.js";
 const router = Router();
 
-router.route("/register").post(registerUser);
+router.route("/register").post(registerAccount);
 router.route("/deposit").post(depositMoney);
 router.route("/Balance").post(fetchBalance);
 router.route("/debitMoney").post(debitMoney);

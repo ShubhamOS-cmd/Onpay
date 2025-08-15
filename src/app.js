@@ -18,6 +18,9 @@ app.use(express.static("public"));
 app.use(cookieParser())
 
 import bankRouter from "./routes/bank.routes.js";
+import userRouter from "./routes/user.routes.js"
 app.use("/api/v1/bank" , bankRouter);
+app.use("/api/v1/user",userRouter);
 
+//http://localhost:8000/api/v1/users/register
 export default app

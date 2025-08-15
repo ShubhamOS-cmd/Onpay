@@ -22,7 +22,7 @@ const userSchema = new Schema({
             unique: true,
             index: true,
     },
-    pin:{
+    passpin:{
         type: String,
             required: true,
     },
@@ -41,14 +41,14 @@ const userSchema = new Schema({
 
 // encrypt password before save
 userSchema.pre("save" , async function (next) {
-    if(!this.isModified("pin"))return next();
-    this.pin = await bcrypt.hash(this.pin , 10);
+    if(!this.isModified("passpin"))return next();
+    this.passpin = await bcrypt.hash(this.passpin , 10);
     next(); 
 })
 
 // check password 
-userSchema.methods.isPasswordCorrect = async function(password){
-    return await bcrypt.compare(password , this.password) // return true or false
+userSchema.methods.isPasswordCorrect = async function(passpin){
+    return await bcrypt.compare(passpin , this.passpin) // return true or false
     // password -> the password is send by user 
     // this.password the password is which is in databases
 }
