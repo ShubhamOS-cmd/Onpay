@@ -34,7 +34,7 @@ const userSchema = new Schema({
         type: String,
     },
     acc_id:{
-        type:Number,
+        type:String,
         required:true,
     },
 },{timestamps: true})

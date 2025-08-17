@@ -22,25 +22,37 @@ const registerUser = asyncHandler(async (req , res )=>{
     // return response
     console.log("request of body : ", req.body);
     const { username , email , phoneno , passpin , acc_id} = req.body;
-    if([username , email , phoneno , passpin , acc_id].some((field) => field?.trim === "")){
+    if([username , email , phoneno , passpin , acc_id ].some((field) => field?.trim === "")){
         throw new ApiError(400 , "All field are required!");
     }
-
+    console.log("This is my type of acc_id : ",typeof(acc_id));
+    
+    if(!acc_id){
+        throw new ApiError(401 ,"Please enter valid account no!");
+    }
+    if(phoneno.length!==10){
+        throw new ApiError(401 , "Please enter valid phoneNo!");
+    }
+    if(passpin.length!==6){
+        throw new ApiError(401 , "Length of 6 pin required!");
+    }
     const name = username.toLowerCase().trim();
     const existeduser = await User.findOne({phoneno});
     if(existeduser){
         throw new ApiError(409 , "already user is registerd!");
     }
-    const bankAccount = await Account.findOne({phoneno});
+    const bankAccount = await Account.findById(acc_id);
     if(!bankAccount){
         throw new ApiError(409 , "Please make a bank account first!");
     }
-    if(acc_id !== bankAccount._id){
-        throw new ApiError(409 , "please enter valid Account No");
+    console.log("bank account no ",bankAccount);
+    
+    if(bankAccount.phoneno !== phoneno){
+        throw new ApiError(409 , "please recheck accountNo and phoneNo ");
     }
     // check for image of avatar
-    console.log("request of file : ",req.file.avatar);
-    const avatarLocalPath = req.file?.avatar[0]?.path;
+    console.log("request of file : ",req.file);
+    const avatarLocalPath = req.file?.path;
     if(!avatarLocalPath){
         throw new ApiError(400 , "please send Avatar file , it is required!");
     }
