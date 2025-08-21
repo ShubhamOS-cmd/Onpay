@@ -34,8 +34,8 @@ const userSchema = new Schema({
         type: String,
     },
     acc_id:{
-        type:String,
-        required:true,
+        type: Schema.Types.ObjectId,
+        ref : "Account",
     },
 },{timestamps: true})
 

@@ -8,8 +8,13 @@ import { registerUser,
     updateAccountDetails,
     updateAvatar
  } from "../controllers/user.controllers.js";
- import { verifyJWT } from "../middlewares/auth.middleware.js";
 
+ import { paymentThroughPhoneNo,
+    paymentThroughAccountNo,
+    AccountBalance
+ } from "../controllers/payment.controller.js"; 
+
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 const router = Router();
 
 router.route("/register").post(
@@ -22,4 +27,7 @@ router.route("/refreshMe").post(refreshTokenAccessToken);
 router.route("/changePassPin").post(verifyJWT , changePassPin);
 router.route("/updateAccount").post(verifyJWT , updateAccountDetails);
 router.route("/updateAvatar").post(verifyJWT , upload.single("avatar"),updateAvatar);
+router.route("/sendviaPhoneNo").post(verifyJWT , paymentThroughPhoneNo );
+router.route("/sendviaAccountNo").post(verifyJWT , paymentThroughAccountNo);
+router.route("AccountBalance").post(verifyJWT , AccountBalance);
 export default router

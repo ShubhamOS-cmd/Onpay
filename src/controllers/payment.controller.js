@@ -12,3 +12,25 @@
 
 // this file is dedicated to only payment related 
 // if i want to get history then i do this in usercontroller
+
+import { Account } from "../models/account.model";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import jwt from "jsonwebtoken"
+
+const paymentThroughPhoneNo = asyncHandler(async(req , res)=>{
+
+})
+
+const paymentThroughAccountNo = asyncHandler(async(req , res)=>{
+
+})
+const AccountBalance = asyncHandler(async(req , res)=>{
+
+})
+export {
+    paymentThroughPhoneNo,
+    paymentThroughAccountNo,
+    AccountBalance,
+}
