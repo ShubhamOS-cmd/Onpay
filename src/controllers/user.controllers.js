@@ -33,6 +33,7 @@ const registerUser = asyncHandler(async (req , res )=>{
     // remove passpin , refresh token field from response
     // check for user creation
     // return response
+    // in future we make otp system for login and register
     console.log("request of body : ", req.body);
     const { username , email , phoneno , passpin , acc_id} = req.body;
     if([username , email , phoneno , passpin , acc_id ].some((field) => field?.trim === "")){

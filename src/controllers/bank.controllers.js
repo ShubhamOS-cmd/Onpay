@@ -209,7 +209,7 @@ const sendMoney = asyncHandler(async(req , res)=>{
     }
 
     const senderaccount = await Account.findOne({phoneno: senderPhoneNo});
-    const receiveraccount = await Account.findOne({phoneno: receiverPhoneNo});
+    const receiveraccount = await Account.findOne({phoneno: receiverPhoneNo}).select("-password");
     if(!senderaccount){
         throw new ApiError(404 , "Your account Not existed please try valid phoneNo");
     }

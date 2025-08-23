@@ -29,5 +29,5 @@ router.route("/updateAccount").post(verifyJWT , updateAccountDetails);
 router.route("/updateAvatar").post(verifyJWT , upload.single("avatar"),updateAvatar);
 router.route("/sendviaPhoneNo").post(verifyJWT , paymentThroughPhoneNo );
 router.route("/sendviaAccountNo").post(verifyJWT , paymentThroughAccountNo);
-router.route("AccountBalance").post(verifyJWT , AccountBalance);
+router.route("/AccountBalance").post(verifyJWT , AccountBalance);
 export default router
