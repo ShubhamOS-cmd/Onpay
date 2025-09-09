@@ -6,7 +6,9 @@ import { registerUser,
     refreshTokenAccessToken,
     changePassPin,
     updateAccountDetails,
-    updateAvatar
+    updateAvatar,
+    getMoneyReceivingHistory,
+    getMoneySendingHistrory
  } from "../controllers/user.controllers.js";
 
  import { paymentThroughPhoneNo,
@@ -30,4 +32,7 @@ router.route("/updateAvatar").post(verifyJWT , upload.single("avatar"),updateAva
 router.route("/sendviaPhoneNo").post(verifyJWT , paymentThroughPhoneNo );
 router.route("/sendviaAccountNo").post(verifyJWT , paymentThroughAccountNo);
 router.route("/AccountBalance").post(verifyJWT , AccountBalance);
+router.route("/getReceivingHistory").get(verifyJWT,getMoneyReceivingHistory);
+router.route("/getSendingHistory").get(verifyJWT,getMoneySendingHistrory);
+
 export default router

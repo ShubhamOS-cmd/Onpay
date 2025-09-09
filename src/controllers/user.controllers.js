@@ -4,6 +4,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { User } from "../models/user.models.js";
 import { Account } from "../models/account.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { Transaction } from "../models/transaction.model.js";
 import jwt from "jsonwebtoken"
 import mongoose from "mongoose";
 const generateAccessAndRefreshToken = async(userId) => {
@@ -263,6 +264,36 @@ const updateAvatar = asyncHandler(async(req , res)=>{
         200 , user , "Avatar file upload successfully"
     ))
 })
+const getMoneyReceivingHistory = asyncHandler(async(req,res)=>{
+    const userId = req.user?._id;
+    if(!userId){
+        throw new ApiError(404 , "Unauthorized request");
+    }
+    const receivingHistory = await Transaction.find(
+       { receiver : userId }
+    ).sort({createdAt : -1});
+    if(!receivingHistory.length){
+        throw new ApiError(401 , "Not payment received yet")
+    }
+    console.log(receivingHistory);
+    
+    return res.status(200).json(new ApiResponse(200 , receivingHistory , "receiveng History fetched"));
+})
+const getMoneySendingHistrory = asyncHandler(async(req,res)=>{
+    const userId = req.user?._id;
+    if(!userId){
+        throw new ApiError(404 , "Unauthorized request");
+    }
+    const sendingHistory = await Transaction.find(
+       { sender : userId }
+    ).sort({createdAt : -1});
+    if(!sendingHistory.length){
+        throw new ApiError(401 , "Not payment received yet")
+    }
+    console.log(sendingHistory);
+    
+    return res.status(200).json(new ApiResponse(200 , sendingHistory , "Sending History fetched"));
+})
 export {
     registerUser,
     loginUser,
@@ -271,4 +302,6 @@ export {
     changePassPin,
     updateAccountDetails,
     updateAvatar,
+    getMoneyReceivingHistory,
+    getMoneySendingHistrory,
 }
